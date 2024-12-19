@@ -11,13 +11,6 @@ on:
 jobs:
   selenium:
     runs-on: ubuntu-latest
-
-    services:
-      selenium:
-        image: selenium/standalone-chrome:latest
-        ports:
-          - 4444:4444
-
     steps:
     - name: Check out repository
       uses: actions/checkout@v3
@@ -32,10 +25,5 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run Selenium Script
-      env:
-        SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-      run: |
-        python3 -m venv venv
-        source venv/bin/activate  # Ativar o ambiente
-        python tests/main.py
+    - name: Run Selenium Tests
+      run: python tests/main.py  # or pytest
