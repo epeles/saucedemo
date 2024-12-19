@@ -36,4 +36,6 @@ jobs:
       env:
         SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
       run: |
+        python3 -m venv venv
+        source venv/bin/activate  # Ativar o ambiente
         python tests/main.py
