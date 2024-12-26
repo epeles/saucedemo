@@ -73,4 +73,5 @@ class SauceDemoAutomation:
 
     @allure.step("Quit driver")
     def quit(self):
+        print("The tests ran successfully!")
         self.driver.quit()
