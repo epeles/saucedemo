@@ -36,7 +36,6 @@ def test_sauce_demo_purchase_flow(driver):
         cart_item_count = automation.go_to_cart()
         assert cart_item_count == len(item_ids), f"Expected {len(item_ids)} items in cart, but found {cart_item_count}"
 
-
     with allure.step("Remove an item from the cart"):
         automation.remove_item_from_cart("remove-sauce-labs-backpack")
 
