@@ -30,7 +30,7 @@ jobs:
       run: pytest tests/main.py --alluredir=reports
 
     - name: Generate Allure Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: allure-report
         path: reports
