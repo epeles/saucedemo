@@ -71,7 +71,11 @@ class SauceDemoAutomation:
         self.wait.until(EC.element_to_be_clickable((By.ID, "react-burger-menu-btn"))).click()
         self.wait.until(EC.element_to_be_clickable((By.ID, "logout_sidebar_link"))).click()
 
+    @allure.step("Validate error message")
+    def validate_error_msg(self):
+        error_msg =self.wait.until(EC.presence_of_element_located((By.XPATH, "//h3[@data-test='error']")))
+        assert "Epic sadface: Username and password do not match any user in this service" in error_msg.text
+    
     @allure.step("Quit driver")
     def quit(self):
-        print("The tests ran successfully!")
         self.driver.quit()
