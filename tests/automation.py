@@ -61,4 +61,5 @@ class SauceDemoAutomation:
             self.wait.until(EC.element_to_be_clickable((By.ID, "logout_sidebar_link"))).click()
 
     def quit(self):
+        print("Teste realizado com sucesso!")
         self.driver.quit()

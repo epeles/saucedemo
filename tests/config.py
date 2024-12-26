@@ -5,6 +5,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 def get_driver():
     service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
+    options.add_argument("--headless")  # Executar sem interface gráfica
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(service=service, options=options)
     return driver
 
