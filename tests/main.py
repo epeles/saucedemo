@@ -12,8 +12,8 @@ def driver():
     yield driver
     driver.quit()
 
-@allure.feature("Valid Login and Purchase")  # Group related test cases
-@allure.story("Complete Purchase Flow")  # D
+@allure.feature("Valid Login and Purchase") 
+@allure.story("Complete Purchase Flow") 
 def test_sauce_demo_purchase_flow(driver):
     """Test case for the full purchase flow in SauceDemo."""
     automation = SauceDemoAutomation(driver)
@@ -32,6 +32,9 @@ def test_sauce_demo_purchase_flow(driver):
     with allure.step("Add items to cart"):
         automation.add_items_to_cart(item_ids)
 
+    with allure.step("Filter items by price (low to high)"):
+        automation.filter_items()
+    
     with allure.step("Go to the cart and verify item count"):
         cart_item_count = automation.go_to_cart()
         assert cart_item_count == len(item_ids), f"Expected {len(item_ids)} items in cart, but found {cart_item_count}"
@@ -55,7 +58,7 @@ def test_sauce_demo_purchase_flow(driver):
         automation.logout()
 
 @allure.feature("Invalid Login Handling")  # Group related test cases
-@allure.story("Incorrect Password")  # D
+@allure.story("Incorrect Password") 
 def test_sauce_demo_invalid_login(driver):
     """Test case for the invalid login flow in SauceDemo."""
     automation = SauceDemoAutomation(driver)

@@ -3,6 +3,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException
 import allure
+from selenium.webdriver.support.ui import Select
+from config import ERROR_MESSAGE
 
 
 class SauceDemoAutomation:
@@ -27,6 +29,26 @@ class SauceDemoAutomation:
         assert self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'shopping_cart_badge'))).text == str(
             len(item_ids)
         ), "Incorrect number of items in the cart"
+
+    @allure.step("Filter items by price (low to high)")
+    def filter_items(self):
+        dropdown = self.driver.find_element(By.CSS_SELECTOR, '[data-test="product-sort-container"]')    
+        select = Select(dropdown)
+        select.select_by_value('lohi')
+        self.driver.implicitly_wait(3)
+
+        # Localizar todos os elementos que exibem os preços
+        price_elements = self.driver.find_elements(By.CSS_SELECTOR, '.inventory_item_price')
+
+        # Extrair os valores dos preços e converter para float
+        prices = []
+        for element in price_elements:
+            price_text = element.text.strip('$')  # Remove o símbolo de dólar
+            prices.append(float(price_text))
+
+        # Verificar se a lista de preços está ordenada de menor para maior
+        assert prices == sorted(prices), "Os preços não estão ordenados de menor para maior."
+
 
     @allure.step("Go to cart")
     def go_to_cart(self):
@@ -73,9 +95,15 @@ class SauceDemoAutomation:
 
     @allure.step("Validate error message")
     def validate_error_msg(self):
-        error_msg =self.wait.until(EC.presence_of_element_located((By.XPATH, "//h3[@data-test='error']")))
+        error_msg =self.wait.until(EC.presence_of_element_located((ERROR_MESSAGE)))
+        WebDriverWait(self.driver, 10).until(
+            lambda driver: "error" in self.driver.find_element(By.ID, "user-name").get_attribute("class")
+        )
         assert "Epic sadface: Username and password do not match any user in this service" in error_msg.text
-    
+        self.driver.find_element(By.CSS_SELECTOR, "[data-test=error-button]").click()
+        self.wait.until(EC.invisibility_of_element_located((ERROR_MESSAGE)))
+
+
     @allure.step("Quit driver")
     def quit(self):
         self.driver.quit()
